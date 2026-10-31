@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#09090d">
+<meta name="description" content="Ludoonus. The Cycle: Frontier mods, Unreal Engine tools, and Rust game servers.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; font-src 'none'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Ludoonus</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%2313131b'/%3E%3Cpath d='M13 10v19h15' fill='none' stroke='%23bfa3ff' stroke-width='3'/%3E%3Cpath d='M24 10h5v5' fill='none' stroke='%2393bbff' stroke-width='2'/%3E%3C/svg%3E">
+<style>
+/* All visual assets, styles and interaction are contained in this file. */
+:root {
+  color-scheme: dark;
+  --bg: #09090d;
+  --surface: #101015;
+  --text: #f0eef5;
+  --muted: #aaa6b5;
+  --quiet: #928c9e;
+  --line: #2b2835;
+  --purple: #bfa3ff;
+  --blue: #93bbff;
+  --pink: #eea7d1;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-family: var(--sans);
+  font-synthesis: none;
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 28px; scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+body::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 600px; z-index: -1; pointer-events: none; background: radial-gradient(ellipse at 78% -40%, #61519b25, transparent 72%); }
+a { color: inherit; text-decoration: none; text-underline-offset: 5px; }
+button, input, summary { font: inherit; touch-action: manipulation; }
+button { color: inherit; cursor: pointer; }
+button, input { border-radius: 0; }
+button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visible { outline: 2px solid var(--blue); outline-offset: 5px; }
+::selection { color: #09090d; background: var(--purple); }
+[hidden] { display: none !important; }
+svg { display: block; flex-shrink: 0; }
+p, h1, h2, h3, h4 { margin: 0; }
+button::-moz-focus-inner { border: 0; }
+.shell { width: min(1184px, calc(100% - 112px)); margin-inline: auto; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.skip { position: fixed; z-index: 10; top: -100px; left: 20px; background: var(--text); color: var(--bg); padding: 12px 18px; border-radius: 4px; }
+.skip:focus { top: 14px; }
+.header { height: 88px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); gap: 30px; }
+.brand { display: inline-flex; align-items: center; gap: 11px; font-weight: 600; letter-spacing: -.35px; font-size: 16px; }
+.brand-mark { width: 31px; height: 31px; display: grid; place-items: center; border: 1px solid #42384e; border-radius: 8px; background: linear-gradient(145deg, #232030, #131219); box-shadow: inset 0 1px #e6cfff0a; }
+.brand-mark svg { width: 18px; height: 18px; }
+.nav { display: flex; gap: 32px; align-items: center; }
+.nav a { font-size: 13px; color: var(--muted); padding: 12px 0; transition: color .16s; }
+.nav a:hover { color: var(--text); }
+.github { display: inline-flex; align-items: center; justify-content: center; gap: 9px; border: 1px solid #37313f; border-radius: 6px; background: #141219; padding: 9px 13px; font-size: 12px; min-height: 40px; transition: border-color .16s, background .16s; }
+.github:hover { border-color: #7b648f; background: #1e1827; }
+.github svg { width: 14px; height: 14px; }
+.hero { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; padding: 76px 0 65px; align-items: center; position: relative; }
+.hero h1 { font-size: clamp(48px, 6.2vw, 82px); line-height: 1.05; letter-spacing: -.06em; font-weight: 650; }
+.role { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--muted); margin-top: 18px; }
+.role::before { content: ""; height: 1px; width: 23px; background: var(--purple); }
+.hero-copy { font-size: 18px; color: #c0bbcb; line-height: 1.8; max-width: 470px; padding-top: 8px; }
+.hero-copy strong { color: var(--text); font-weight: 500; }
+.hero-copy p + p { margin-top: 3px; }
+.hero::after { content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, #8b6abb80, #769ee56b 50%, #c47ca360 80%, #2b2835); }
+.projects-section { padding-top: 34px; }
+.section-top { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 22px; }
+.section-title { display: flex; gap: 13px; align-items: baseline; }
+h2 { font-size: 23px; font-weight: 550; letter-spacing: -.65px; line-height: 1.3; }
+.total { font: 11px var(--mono); color: var(--quiet); }
+.toolbar { display: none; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 20px; }
+.js .toolbar { display: flex; }
+.filters { display: flex; gap: 4px; border: 1px solid #29252f; padding: 4px; border-radius: 8px; background: #0f0e14; }
+.filter { background: none; border: 1px solid transparent; border-radius: 5px; padding: 6px 17px; min-height: 34px; font-size: 12px; color: var(--muted); transition: color .15s, background .15s, border-color .15s; }
+.filter:hover { color: var(--text); background: #1a1721; }
+.filter[aria-pressed="true"] { background: #272033; color: #e1d3ff; border-color: #4a3b5c; box-shadow: 0 1px 4px #0005, inset 0 1px #ffffff08; }
+.search { width: 205px; position: relative; display: flex; align-items: center; gap: 9px; color: var(--quiet); }
+.search svg { width: 16px; height: 16px; }
+.search input { width: 100%; min-width: 0; border: 0; background: transparent; color: var(--text); padding: 11px 1px; font-size: 12px; line-height: 1.5; }
+.search input::placeholder { color: var(--quiet); opacity: 1; }
+.search:focus-within { color: var(--blue); }
+.project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.project { position: relative; min-width: 0; border: 1px solid #36303f; border-radius: 12px; background: var(--surface); overflow: hidden; scroll-margin-top: 24px; box-shadow: 0 6px 24px #0000001a; }
+.feature { grid-column: 1 / -1; display: grid; grid-template-columns: 1.1fr 1fr; background: linear-gradient(110deg, #17121f 0%, #111017 53%, #111017); }
+.feature::before { content: ""; position: absolute; top: 0; left: 1px; right: 1px; height: 1px; background: linear-gradient(90deg, transparent, #ac85e668, transparent); pointer-events: none; }
+.feature-main { position: relative; padding: 35px 38px 32px; min-height: 316px; display: flex; flex-direction: column; align-items: flex-start; }
+.project-label { display: inline-flex; align-items: center; gap: 9px; font-size: 11px; font-weight: 500; color: var(--purple); }
+.project-label svg { width: 15px; height: 15px; }
+.feature h3 { font-size: clamp(31px, 3.15vw, 42px); line-height: 1.12; letter-spacing: -1.7px; font-weight: 550; margin: 27px 0 16px; }
+.description { font-size: 14px; line-height: 1.85; color: #b6b0c3; }
+.feature .description { max-width: 340px; }
+.state { display: inline-flex; gap: 7px; align-items: center; font-size: 10px; color: var(--muted); line-height: 1.5; }
+.state::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: var(--purple); flex-shrink: 0; }
+.feature .state { margin-top: 26px; padding: 6px 9px; border: 1px solid #3b3048; border-radius: 4px; background: #241b302e; }
+.feature-panel { margin: 12px 12px 12px 0; border: 1px solid #302b3b; border-radius: 8px; padding: 22px 25px 18px; align-self: stretch; background: linear-gradient(155deg, #1c1826a8, #131219); display: flex; flex-direction: column; }
+.panel-heading { color: #c4bacf; font-size: 11px; font-weight: 500; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.feature-detail { border-top: 1px solid #322b3e; }
+.feature-detail summary { list-style: none; display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 500; min-height: 55px; cursor: pointer; padding: 10px 0; }
+summary::-webkit-details-marker { display: none; }
+.feature-detail summary > svg { width: 15px; height: 15px; color: var(--purple); }
+.feature-detail:nth-of-type(2) summary > svg { color: var(--blue); }
+.feature-detail:nth-of-type(3) summary > svg { color: var(--pink); }
+.feature-detail summary:hover { color: var(--purple); }
+.plus { position: relative; width: 13px; height: 13px; margin-left: auto; flex-shrink: 0; color: #aaa0b8; }
+.plus::before, .plus::after { position: absolute; content: ""; background: currentColor; left: 2px; right: 2px; height: 1px; top: 6px; transition: transform .16s; }
+.plus::after { transform: rotate(90deg); }
+details[open] > summary .plus::after { transform: rotate(0); }
+.feature-detail p { padding: 0 18px 16px 27px; font-size: 12px; line-height: 1.75; color: #b3aabd; }
+.compatibility { margin-top: auto; padding-top: 15px; color: var(--quiet); font-size: 10px; line-height: 1.6; }
+.card { padding: 28px 30px 24px; display: flex; flex-direction: column; align-items: flex-start; background: linear-gradient(160deg, #151724, #101015 74%); border-color: #303240; transition: border-color .18s, box-shadow .18s; }
+.card:hover { border-color: #4e5578; box-shadow: 0 8px 32px #0003; }
+.card.station { background: linear-gradient(150deg, #1b1420, #111015 74%); border-color: #3c2c3c; }
+.card.station:hover { border-color: #71516b; }
+.card-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; }
+.card .project-label { color: var(--blue); }
+.card.station .project-label { color: var(--pink); }
+.card .state::before { background: var(--blue); }
+.card.station .state::before { background: var(--pink); }
+.card h3 { margin: 28px 0 14px; font-size: 25px; font-weight: 550; line-height: 1.2; letter-spacing: -.85px; }
+.card .description { font-size: 13px; max-width: 435px; }
+.examples { width: 100%; margin-top: 23px; border-top: 1px solid #303141; }
+.examples summary { display: flex; align-items: center; gap: 12px; font-size: 11px; font-weight: 500; color: var(--blue); list-style: none; padding: 14px 0 1px; min-height: 38px; cursor: pointer; }
+.examples summary:hover { color: var(--text); }
+.examples summary .plus { width: 11px; color: var(--blue); }
+.examples ul { margin: 12px 0 2px; padding: 0 0 0 15px; font-size: 12px; line-height: 1.85; color: var(--muted); }
+.examples li { padding-left: 3px; }
+.examples li::marker { color: #6d91c8; }
+.station .description { margin-bottom: 23px; }
+.local-project { grid-column: 1 / -1; display: grid; grid-template-columns: 1.15fr 1.2fr auto; align-items: center; gap: 28px; padding: 26px 30px; border-color: #2c2835; background: linear-gradient(105deg, #14121b, #101015 72%); }
+.local-heading { display: flex; gap: 16px; align-items: center; min-width: 0; }
+.local-icon { width: 40px; height: 44px; display: grid; place-items: center; flex-shrink: 0; color: var(--purple); border: 1px solid #403649; border-radius: 7px; background: #1c1726; }
+.local-icon svg { width: 20px; height: 20px; }
+.local-heading .project-label { font-size: 10px; color: var(--quiet); }
+.local-project h3 { font-size: 19px; font-weight: 550; letter-spacing: -.5px; line-height: 1.4; margin-top: 3px; }
+.local-project .description { font-size: 12px; }
+.project-grid[data-count="1"] .card { grid-column: 1 / -1; }
+.result-count { display: none; font-size: 11px; color: var(--quiet); padding-top: 16px; }
+.js .result-count { display: block; }
+.empty { border: 1px dashed #42364f; padding: 35px; border-radius: 8px; color: var(--muted); font-size: 14px; }
+.empty button { display: block; padding: 12px 0 0; border: 0; background: none; font-size: 12px; text-decoration: underline; text-underline-offset: 4px; color: var(--purple); }
+.about { display: grid; grid-template-columns: 1fr 1.65fr; gap: 60px; padding: 48px 0; margin-top: 45px; border-top: 1px solid var(--line); align-items: baseline; }
+.about p { color: var(--muted); font-size: 15px; line-height: 1.85; max-width: 560px; }
+.footer { padding: 23px 0 31px; display: flex; justify-content: space-between; align-items: center; gap: 20px; border-top: 1px solid var(--line); font-size: 11px; color: var(--quiet); }
+.footer-left { display: flex; align-items: center; gap: 17px; }
+.draft { font-size: 10px; color: #bd94b2; padding-left: 17px; border-left: 1px solid #3a2f40; }
+.footer-links { display: flex; align-items: center; gap: 25px; }
+.footer a:hover { color: var(--pink); }
+.footer a { min-height: 28px; display: flex; align-items: center; }
+@media (min-width: 1400px) {
+  .hero { padding-top: 84px; padding-bottom: 73px; }
+  .feature-main { padding: 40px 42px 34px; }
+  .feature-panel { padding: 25px 30px 20px; }
+}
+@media (max-width: 1050px) {
+  .shell { width: calc(100% - 72px); }
+  .hero { gap: 40px; padding-block: 60px; }
+  .hero h1 { font-size: 64px; }
+  .hero-copy { font-size: 16px; }
+  .feature-main { padding: 30px; }
+  .feature-panel { padding: 22px; }
+  .card { padding: 25px; }
+  .card-top { align-items: flex-start; gap: 10px; }
+  .card .state { font-size: 9px; }
+  .card h3 { font-size: 23px; }
+  .local-project { grid-template-columns: 1fr 1fr; gap: 20px; padding: 25px; }
+  .local-project > .state { display: none; }
+}
+@media (max-width: 720px) {
+  .shell { width: calc(100% - 40px); max-width: 580px; }
+  .header { height: 73px; gap: 15px; }
+  .brand { font-size: 14px; gap: 9px; }
+  .brand-mark { width: 28px; height: 28px; border-radius: 7px; }
+  .nav { gap: 21px; margin-left: auto; }
+  .nav a { font-size: 12px; }
+  .header > .github { padding: 9px; width: 35px; min-height: 35px; }
+  .github-text { display: none; }
+  .hero { grid-template-columns: 1fr; gap: 25px; padding: 43px 0 36px; }
+  .hero h1 { font-size: clamp(46px, 12vw, 66px); }
+  .role { margin-top: 14px; font-size: 11px; }
+  .hero-copy { font-size: 15px; padding: 0; max-width: 460px; }
+  .hero-copy p + p { margin-top: 3px; }
+  .projects-section { padding-top: 27px; }
+  .section-top { margin-bottom: 18px; }
+  h2 { font-size: 21px; }
+  .toolbar { align-items: stretch; flex-wrap: wrap; gap: 12px; padding-bottom: 17px; }
+  .filters { flex: 1; justify-content: space-between; }
+  .filter { padding: 6px 14px; flex: 1; }
+  .search { width: 100%; padding-inline: 9px; background: #100f15; border: 1px solid #29252f; border-radius: 6px; }
+  .search input { min-height: 40px; padding: 9px 1px; }
+  .project-grid { grid-template-columns: 1fr; gap: 15px; }
+  .feature { grid-template-columns: 1fr; }
+  .feature-main { padding: 28px 26px 25px; min-height: auto; }
+  .feature h3 { margin: 22px 0 13px; font-size: 35px; letter-spacing: -1.25px; }
+  .feature h3 br { display: none; }
+  .feature .description { max-width: 390px; font-size: 13px; }
+  .feature .state { margin-top: 21px; }
+  .feature-panel { margin: 0 10px 10px; padding: 21px 20px 17px; }
+  .panel-heading { margin-bottom: 12px; }
+  .feature-detail summary { min-height: 53px; }
+  .card { padding: 26px; }
+  .card h3 { font-size: 26px; margin-top: 25px; }
+  .card .state { font-size: 10px; }
+  .local-project { grid-template-columns: 1fr; padding: 25px 26px; gap: 16px; }
+  .local-project .description { padding-left: 56px; font-size: 12px; }
+  .local-project h3 { font-size: 21px; }
+  .about { grid-template-columns: 1fr; gap: 19px; padding: 31px 0 35px; margin-top: 32px; }
+  .about p { font-size: 14px; }
+  .footer { font-size: 10px; padding: 20px 0 25px; }
+  .footer-left { gap: 11px; }
+  .draft { padding-left: 11px; font-size: 9px; }
+  .footer-links { gap: 16px; }
+}
+@media (max-width: 365px) {
+  .shell { width: calc(100% - 32px); }
+  .header { gap: 12px; }
+  .brand { font-size: 13px; gap: 7px; }
+  .brand-mark { width: 25px; height: 25px; }
+  .nav { gap: 15px; }
+  .nav a { font-size: 11px; }
+  .header > .github { width: 31px; min-height: 31px; padding: 7px; }
+  .role { font-size: 10px; gap: 8px; }
+  .hero-copy { font-size: 14px; }
+  .filter { padding-inline: 10px; }
+  .feature-main, .card { padding-inline: 22px; }
+  .feature h3 { font-size: 31px; }
+  .feature-panel { padding-inline: 17px; }
+  .card-top { flex-wrap: wrap; }
+  .card h3 { font-size: 23px; }
+  .local-project { padding-inline: 22px; }
+  .local-project h3 { font-size: 18px; }
+  .draft { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+@media (forced-colors: active) {
+  .project, .feature-panel, .github, .filters, .filter, .brand-mark { border: 1px solid CanvasText; }
+  .filter[aria-pressed="true"] { border-color: Highlight; color: Highlight; }
+  .plus::before, .plus::after { background: ButtonText; }
+  .state::before { background: CanvasText; }
+}
+@media print {
+  :root { color-scheme: light; }
+  body { background: white; color: black; }
+  body::before, .nav, .github, .toolbar, .footer, .result-count, .skip { display: none !important; }
+  .shell { width: 100%; }
+  .hero { padding: 28px 0; }
+  .hero h1 { font-size: 45px; }
+  .project-grid { display: block; }
+  .project, .feature-panel { background: white; color: black; border-color: #999; box-shadow: none; break-inside: avoid; margin-bottom: 15px; }
+  .project[hidden] { display: block !important; }
+  .description, .hero-copy, .hero-copy strong, .role, .about p, .state, .project-label, .compatibility, .feature-detail p { color: #333; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#projects">Skip to projects</a>
+<div class="shell" id="top">
+  <header class="header">
+    <a class="brand" href="#top" aria-label="Ludoonus home">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 4v15h13" stroke="#bfa3ff" stroke-width="2"/><path d="M16 4h4v4" stroke="#93bbff" stroke-width="1.5"/></svg></span>
+      ludoonus
+    </a>
+    <nav class="nav" aria-label="Main navigation"><a href="#projects">Projects</a><a href="#about">About</a></nav>
+    <a class="github" href="https://github.com/Ludoonus" target="_blank" rel="noopener noreferrer" aria-label="Ludoonus on GitHub, opens in a new tab"><span class="github-text">GitHub</span><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.86c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.03A9.58 9.58 0 0 1 12 6.82c.85 0 1.71.11 2.51.34 1.91-1.3 2.75-1.03 2.75-1.03.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.76c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg></a>
+  </header>
+  <main>
+    <section class="hero" aria-labelledby="name">
+      <div><h1 id="name">Ludoonus</h1><p class="role">Reverse engineering &amp; game development</p></div>
+      <div class="hero-copy"><p>I make mods and tools for <strong>The Cycle: Frontier.</strong></p><p>I also work on game servers in Rust.</p></div>
+    </section>
+    <section class="projects-section" id="projects" aria-labelledby="projects-title">
+      <div class="section-top"><div class="section-title"><h2 id="projects-title">Projects</h2><span class="total" aria-hidden="true">04</span></div></div>
+      <div class="toolbar">
+        <div class="filters" role="group" aria-label="Filter projects">
+          <button type="button" class="filter" data-filter="all" aria-pressed="true">All</button>
+          <button type="button" class="filter" data-filter="tools" aria-pressed="false">Tools</button>
+          <button type="button" class="filter" data-filter="game" aria-pressed="false">Mods</button>
+          <button type="button" class="filter" data-filter="systems" aria-pressed="false">Systems</button>
+        </div>
+        <label class="search"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m12.5 12.5 4 4"/></svg><span class="sr-only">Search projects</span><input type="search" id="search" placeholder="Search projects" autocomplete="off" maxlength="200"></label>
+      </div>
+      <div class="project-grid" data-count="4">
+        <article class="project feature" id="asset-studio" data-category="tools" aria-labelledby="studio-title">
+          <div class="feature-main">
+            <p class="project-label"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="m10 2 8 4-8 4-8-4 8-4ZM2 10l8 4 8-4M2 14l8 4 8-4"/></svg>Unreal Engine</p>
+            <h3 id="studio-title">Unreal <br>Asset Studio</h3>
+            <p class="description">A tool for inspecting and editing Unreal Engine assets.</p>
+            <span class="state">In development</span>
+          </div>
+          <div class="feature-panel">
+            <h4 class="panel-heading">Features</h4>
+            <details class="feature-detail" open>
+              <summary><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M3 5V3h5l2 2h7v12H3V5Zm0 3h14"/></svg>Assets<span class="plus" aria-hidden="true"></span></summary>
+              <p>Browse assets and inspect their properties.</p>
+            </details>
+            <details class="feature-detail">
+              <summary><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="6" y="2" width="8" height="5" rx="1"/><path d="M10 7v4M4 14v-3h12v3"/><rect x="1" y="14" width="6" height="4" rx=".5"/><rect x="13" y="14" width="6" height="4" rx=".5"/></svg>Widgets &amp; UI<span class="plus" aria-hidden="true"></span></summary>
+              <p>Inspect widgets and UI structure.</p>
+            </details>
+            <details class="feature-detail">
+              <summary><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M9 3H3v14h14v-6M10 10l-1 3 3-1 6-6-2-2-6 6Z"/></svg>Preview &amp; edit<span class="plus" aria-hidden="true"></span></summary>
+              <p>Preview and edit supported assets.</p>
+            </details>
+            <p class="compatibility">Support varies by asset and game.</p>
+          </div>
+        </article>
+        <article class="project card" id="cycle-mods" data-category="game" aria-labelledby="mods-title">
+          <div class="card-top"><p class="project-label"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 3v14M10 3v14M16 3v14M1 7h6M7 13h6M13 6h6"/></svg>Modding</p><span class="state">Ongoing</span></div>
+          <h3 id="mods-title">The Cycle: Frontier mods</h3>
+          <p class="description">UI changes, effects, and compatibility fixes for The Cycle: Frontier.</p>
+          <details class="examples"><summary>Examples<span class="plus" aria-hidden="true"></span></summary><ul><li>Free-loadout and preset menus.</li><li>Smoke effects.</li></ul></details>
+        </article>
+        <article class="project card station" id="station" data-category="game" aria-labelledby="station-title">
+          <div class="card-top"><p class="project-label"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="2" y="3" width="16" height="11" rx="1"/><path d="M7 18h6m-3-4v4M5 6h4m-4 3h7"/></svg>The Cycle: Frontier</p><span class="state">In development</span></div>
+          <h3 id="station-title">Dedicated S2 Station</h3>
+          <p class="description">Station menus and interactions for The Cycle: Frontier S2.</p>
+        </article>
+        <article class="project local-project" id="local-tools" data-category="systems" aria-labelledby="local-title">
+          <div class="local-heading"><span class="local-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M7 6.5h2m4 0h4m-10 11h2m4 0h4"/></svg></span><div><p class="project-label">Personal projects</p><h3 id="local-title">Local AI &amp; homelab</h3></div></div>
+          <p class="description">Self-hosted services, local coding models, and scripts for my development setup.</p>
+          <span class="state">Ongoing</span>
+        </article>
+      </div>
+      <div class="empty" hidden><p>No projects match.</p><button type="button" id="clear-search">Clear search and filters</button></div>
+      <p class="result-count" role="status" aria-live="polite" aria-atomic="true">4 projects</p>
+    </section>
+    <section class="about" id="about" aria-labelledby="about-title"><h2 id="about-title">About</h2><p>I mostly work with Unreal Engine 4 and IDA. I’m also studying vulnerability research.</p></section>
+  </main>
+  <footer class="footer"><div class="footer-left"><span>© 2026 Ludoonus</span></div><div class="footer-links"><a href="https://github.com/Ludoonus" target="_blank" rel="noopener noreferrer" aria-label="Ludoonus on GitHub, opens in a new tab">GitHub ↗</a><a href="#top">Back to top ↑</a></div></footer>
+</div>
+<script>
+(() => {
+  'use strict';
+  const search = document.getElementById('search');
+  const filters = Array.from(document.querySelectorAll('[data-filter]'));
+  const projects = Array.from(document.querySelectorAll('.project'));
+  const grid = document.querySelector('.project-grid');
+  const count = document.querySelector('.result-count');
+  const total = document.querySelector('.total');
+  const empty = document.querySelector('.empty');
+  const searchText = new Map(projects.map(project => [project, project.textContent.toLocaleLowerCase()]));
+  let category = 'all';
+
+  function update() {
+    const query = search.value.trim().toLocaleLowerCase();
+    let visible = 0;
+    for (const project of projects) {
+      const matchesCategory = category === 'all' || project.dataset.category === category;
+      const matchesSearch = searchText.get(project).includes(query);
+      project.hidden = !(matchesCategory && matchesSearch);
+      if (!project.hidden) visible++;
+    }
+    grid.dataset.count = String(visible);
+    total.textContent = String(visible).padStart(2, '0');
+    count.textContent = `${visible} project${visible === 1 ? '' : 's'}`;
+    empty.hidden = visible !== 0;
+    grid.hidden = visible === 0;
+    for (const filter of filters) {
+      filter.setAttribute('aria-pressed', String(filter.dataset.filter === category));
+    }
+  }
+
+  function reset() {
+    category = 'all';
+    search.value = '';
+    update();
+  }
+
+  for (const button of filters) button.addEventListener('click', () => {
+    category = button.dataset.filter;
+    update();
+  });
+  search.addEventListener('input', update);
+  search.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && search.value) {
+      search.value = '';
+      update();
+      event.preventDefault();
+    }
+  });
+  document.getElementById('clear-search').addEventListener('click', () => {
+    reset();
+    search.focus({ preventScroll: true });
+  });
+
+  // Direct project anchors remain useful when a filter has hidden their target.
+  function showLinkedProject() {
+    let id;
+    try { id = decodeURIComponent(location.hash.slice(1)); } catch { return; }
+    const target = document.getElementById(id);
+    if (target && target.classList.contains('project') && target.hidden) {
+      reset();
+      target.scrollIntoView({ block: 'start' });
+    }
+  }
+  window.addEventListener('hashchange', showLinkedProject);
+  window.addEventListener('pageshow', () => { update(); showLinkedProject(); });
+  document.documentElement.classList.add('js');
+  update();
+  showLinkedProject();
+})();
+</script>
+</body>
+</html>
