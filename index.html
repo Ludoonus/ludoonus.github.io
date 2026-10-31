@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#09090d">
-<meta name="description" content="Ludoonus. The Cycle: Frontier mods, Unreal Engine tools, and Rust game servers.">
+<meta name="description" content="Ludoonus. The Cycle: Frontier mods, Unreal Engine tools, reverse engineering, and local development projects.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; font-src 'none'; connect-src 'none'; base-uri 'none'; form-action 'none'">
 <title>Ludoonus</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%2313131b'/%3E%3Cpath d='M13 10v19h15' fill='none' stroke='%23bfa3ff' stroke-width='3'/%3E%3Cpath d='M24 10h5v5' fill='none' stroke='%2393bbff' stroke-width='2'/%3E%3C/svg%3E">
@@ -139,6 +139,7 @@ details[open] > summary .plus::after { transform: rotate(0); }
 .empty button { display: block; padding: 12px 0 0; border: 0; background: none; font-size: 12px; text-decoration: underline; text-underline-offset: 4px; color: var(--purple); }
 .about { display: grid; grid-template-columns: 1fr 1.65fr; gap: 60px; padding: 48px 0; margin-top: 45px; border-top: 1px solid var(--line); align-items: baseline; }
 .about p { color: var(--muted); font-size: 15px; line-height: 1.85; max-width: 560px; }
+.about-copy p + p { margin-top: 16px; }
 .footer { padding: 23px 0 31px; display: flex; justify-content: space-between; align-items: center; gap: 20px; border-top: 1px solid var(--line); font-size: 11px; color: var(--quiet); }
 .footer-left { display: flex; align-items: center; gap: 17px; }
 .draft { font-size: 10px; color: #bd94b2; padding-left: 17px; border-left: 1px solid #3a2f40; }
@@ -266,8 +267,8 @@ details[open] > summary .plus::after { transform: rotate(0); }
   </header>
   <main>
     <section class="hero" aria-labelledby="name">
-      <div><h1 id="name">Ludoonus</h1><p class="role">Reverse engineering &amp; game development</p></div>
-      <div class="hero-copy"><p>I make mods and tools for <strong>The Cycle: Frontier.</strong></p><p>I also work on game servers in Rust.</p></div>
+      <div><h1 id="name">Ludoonus</h1><p class="role">Reverse engineering &amp; game modding</p></div>
+      <div class="hero-copy"><p>I make mods and tools for <strong>The Cycle: Frontier.</strong></p><p>Most of my work is in Unreal Engine 4: editing assets, working on UI, and fixing compatibility issues.</p></div>
     </section>
     <section class="projects-section" id="projects" aria-labelledby="projects-title">
       <div class="section-top"><div class="section-title"><h2 id="projects-title">Projects</h2><span class="total" aria-hidden="true">04</span></div></div>
@@ -285,22 +286,22 @@ details[open] > summary .plus::after { transform: rotate(0); }
           <div class="feature-main">
             <p class="project-label"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="m10 2 8 4-8 4-8-4 8-4ZM2 10l8 4 8-4M2 14l8 4 8-4"/></svg>Unreal Engine</p>
             <h3 id="studio-title">Unreal <br>Asset Studio</h3>
-            <p class="description">A tool for inspecting and editing Unreal Engine assets.</p>
+            <p class="description">An Unreal Engine tool for browsing assets, inspecting widgets, and editing supported content. I’m developing it alongside my mod work, with asset inspection and UI changes as the main focus.</p>
             <span class="state">In development</span>
           </div>
           <div class="feature-panel">
             <h4 class="panel-heading">Features</h4>
             <details class="feature-detail" open>
               <summary><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M3 5V3h5l2 2h7v12H3V5Zm0 3h14"/></svg>Assets<span class="plus" aria-hidden="true"></span></summary>
-              <p>Browse assets and inspect their properties.</p>
+              <p>Browse game assets and inspect their properties before making changes.</p>
             </details>
             <details class="feature-detail">
               <summary><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="6" y="2" width="8" height="5" rx="1"/><path d="M10 7v4M4 14v-3h12v3"/><rect x="1" y="14" width="6" height="4" rx=".5"/><rect x="13" y="14" width="6" height="4" rx=".5"/></svg>Widgets &amp; UI<span class="plus" aria-hidden="true"></span></summary>
-              <p>Inspect widgets and UI structure.</p>
+              <p>Inspect widgets and the structure of in-game interfaces.</p>
             </details>
             <details class="feature-detail">
               <summary><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M9 3H3v14h14v-6M10 10l-1 3 3-1 6-6-2-2-6 6Z"/></svg>Preview &amp; edit<span class="plus" aria-hidden="true"></span></summary>
-              <p>Preview and edit supported assets.</p>
+              <p>Preview supported assets and edit their properties.</p>
             </details>
             <p class="compatibility">Support varies by asset and game.</p>
           </div>
@@ -308,24 +309,24 @@ details[open] > summary .plus::after { transform: rotate(0); }
         <article class="project card" id="cycle-mods" data-category="game" aria-labelledby="mods-title">
           <div class="card-top"><p class="project-label"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 3v14M10 3v14M16 3v14M1 7h6M7 13h6M13 6h6"/></svg>Modding</p><span class="state">Ongoing</span></div>
           <h3 id="mods-title">The Cycle: Frontier mods</h3>
-          <p class="description">UI changes, effects, and compatibility fixes for The Cycle: Frontier.</p>
-          <details class="examples"><summary>Examples<span class="plus" aria-hidden="true"></span></summary><ul><li>Free-loadout and preset menus.</li><li>Smoke effects.</li></ul></details>
+          <p class="description">UI changes, visual effects, and compatibility fixes for The Cycle: Frontier. My work includes free-loadout and preset menus, along with changes to smoke effects.</p>
+          <details class="examples"><summary>Examples<span class="plus" aria-hidden="true"></span></summary><ul><li>Free-loadout menus and kit previews.</li><li>Preset loadout menus.</li><li>Smoke effects and visibility adjustments.</li></ul></details>
         </article>
         <article class="project card station" id="station" data-category="game" aria-labelledby="station-title">
           <div class="card-top"><p class="project-label"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="2" y="3" width="16" height="11" rx="1"/><path d="M7 18h6m-3-4v4M5 6h4m-4 3h7"/></svg>The Cycle: Frontier</p><span class="state">In development</span></div>
           <h3 id="station-title">Dedicated S2 Station</h3>
-          <p class="description">Station menus and interactions for The Cycle: Frontier S2.</p>
+          <p class="description">Station menus and interactions for The Cycle: Frontier S2. This work focuses on the part of the game between raids: navigating menus, choosing equipment, and preparing for the next drop.</p>
         </article>
         <article class="project local-project" id="local-tools" data-category="systems" aria-labelledby="local-title">
           <div class="local-heading"><span class="local-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M7 6.5h2m4 0h4m-10 11h2m4 0h4"/></svg></span><div><p class="project-label">Personal projects</p><h3 id="local-title">Local AI &amp; homelab</h3></div></div>
-          <p class="description">Self-hosted services, local coding models, and scripts for my development setup.</p>
+          <p class="description">Self-hosted services, local coding models, and scripts for my development setup. I use this setup to test coding tools and automate repeated tasks.</p>
           <span class="state">Ongoing</span>
         </article>
       </div>
       <div class="empty" hidden><p>No projects match.</p><button type="button" id="clear-search">Clear search and filters</button></div>
       <p class="result-count" role="status" aria-live="polite" aria-atomic="true">4 projects</p>
     </section>
-    <section class="about" id="about" aria-labelledby="about-title"><h2 id="about-title">About</h2><p>I mostly work with Unreal Engine 4 and IDA. I’m also studying vulnerability research.</p></section>
+    <section class="about" id="about" aria-labelledby="about-title"><h2 id="about-title">About</h2><div class="about-copy"><p>Most of my projects are connected to The Cycle: Frontier. I work with Unreal Engine 4 assets and interfaces, and use IDA when I need to understand how the game behaves.</p><p>The work ranges from menu changes and visual effects to compatibility fixes. I also build tools for inspecting and editing the content I’m working with.</p><p>I’m studying vulnerability research alongside these projects, including C, memory safety, and how compiled programs work.</p></div></section>
   </main>
   <footer class="footer"><div class="footer-left"><span>© 2026 Ludoonus</span></div><div class="footer-links"><a href="https://github.com/Ludoonus" target="_blank" rel="noopener noreferrer" aria-label="Ludoonus on GitHub, opens in a new tab">GitHub ↗</a><a href="#top">Back to top ↑</a></div></footer>
 </div>
